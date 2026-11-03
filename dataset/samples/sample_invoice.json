@@ -1,0 +1,15 @@
+{
+  "document_type": "e-Fatura",
+  "vendor_name": "Tech Tedarik A.Ş.",
+  "date": "2026-11-03",
+  "total_amount": 3450.75,
+  "currency": "TRY",
+  "items": [
+    {
+      "description": "Sunucu Donanımı",
+      "quantity": 1,
+      "unit_price": 3000.00,
+      "tax": 450.75
+    }
+  ]
+}
