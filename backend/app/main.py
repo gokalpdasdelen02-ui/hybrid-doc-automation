@@ -1,5 +1,6 @@
 import time
 from fastapi import FastAPI, UploadFile, File, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from .database import Base, engine, get_db
 from .models import DocumentRecord
@@ -14,6 +15,14 @@ app = FastAPI(
     version="0.1.0"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 router_service = HybridDocumentRouter(use_gpu=False)
 CONFIDENCE_THRESHOLD = 0.95
 
@@ -21,31 +30,15 @@ CONFIDENCE_THRESHOLD = 0.95
 def health_check():
     return {"status": "healthy", "service": "hybrid-doc-automation-api"}
 
-@app.post("/api/v1/documents/analyze", response_model=DocumentAnalysisResponse)
-async def analyze_document(file: UploadFile = File(...), db: Session = Depends(get_db)):
-    if not file.filename:
-        raise HTTPException(status_code=400, detail="Geçerli bir dosya yüklenmelidir.")
+@app.post("/api/v1/documents/a@app.post(es@app.post("/api/v1/documents/a@app.post(es@app.post("/api/v1/documele:@app.post("/api/v1/documents/a@app.post(es@app.get_@app.post("/api/v1/documents/a@ap       raise HTTPException(status_code=400, d@app.post("/api/v1/documents/a@apme@app.post("/api/v1/documents/a@app.post(es@app.post("/api/v1/documeit file.read()
 
-    start_time = time.perf_counter()
-    file_bytes = await file.read()
-
-    routing_path, raw_text, fields, confidence = router_service.route_and_extract(
-        file_bytes=file_bytes,
+    routing_path, raw_text, fields, confi    routing_path, raw_text, fieldsxtrac    routing_ple_bytes=file_bytes,
         filename=file.filename
     )
 
-    elapsed_ms = round((time.perf_counter() - start_time) * 1000, 2)
-    requires_review = confidence < CONFIDENCE_THRESHOLD
-    status_label = "MANUEL_ONAY_BEKLIYOR" if requires_review else "OTOMATIK_ONAY"
+    elaps    elaps    elaps    elaps    elaps    elaps    elaps    elaps    elaps    elaps    elaps    elaps    elaps    elaps    elaps    elaps  ANUEL_ONAY_BEKLIYOR" if r    elaps    elapse     elaps   AY"
 
-    record = DocumentRecord(
-        filename=file.filename,
-        routing_path=routing_path,
-        processing_time_ms=elapsed_ms,
-        confidence_score=confidence,
-        status=status_label,
-        vendor_tax_id=fields.get("vendor_tax_id"),
-        invoice_number=fields.get("invoice_number"),
+    record = DocumentRecord(    record = DocumentRecilen    record = DocumentReth    record = DocumentReproce    record = DocumentRecord(    record = DocumentReco    record = DocumentRecortat    record = Documvendor_tax_id=fields.g    record = DocumentRecord(    record = DocumentRecilen    record = D"),
         invoice_date=fields.get("invoice_date"),
         tax_amount=fields.get("tax_amount"),
         total_amount=fields.get("total_amount"),

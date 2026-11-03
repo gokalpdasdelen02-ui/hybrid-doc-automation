@@ -1,57 +1,23 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hibrit Belge Ayrıştırma</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<script>
+    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <met    <mete p-8 rounded-xl shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl font-bold mb-6 text-ce        <h2 class="text-2xl font-bold mb-6 text>
+        <h2 class="text-2xl fontder- ashed        <h2 cla00 r        <hp-8 fl        <h2 class="teter justify-center cursor-pointer hover:        <h2 class="text-2xl f        <p class="text-sm text-slate        <h2 class="text-2xl fontder- ashs�        <h2 class="text-2xl fontder- ashed        ="fi        <h2 class="text-2xl fontder- ashed     0 f        <h2 class="text-2xl fontder- ashed     file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-bl        <h2 class="text-2xl fontdpe        <h2 cldi        <h2 clato     "uploadBtn" class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition">
+            Sisteme Gönder
+        </button>
+        <pre id="result" class="mt-4 p-4 bg-slate-900 text-green-400 rounded-lg text-xs overflow-x-auto hidden"></pre>
+    </div>
+
+    <script>
         document.getElementById('uploadBtn').addEventListener('click', async () => {
-            const fileInput = document.getElementById('fileInput');
-            const resultDiv = document.getElementById('result');
-
-            if (fileInput.files.length === 0) {
-                resultDiv.textContent = 'Lütfen önce bir belge seçin.';
-                resultDiv.classList.remove('hidden');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
-
-            resultDiv.textContent = 'Belge yükleniyor...';
-            resultDiv.classList.remove('hidden');
-
-            try {
-                // Not: "http://localhost:8000/upload" kısmını takım arkadaşının API endpoint'ine göre güncellemen gerekebilir.
-                const response = await fetch('http://localhost:8000/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    resultDiv.textContent = 'Başarılı! Çıktı: ' + JSON.stringify(data);
-                } else {
-                    resultDiv.textContent = 'API Hatası: Belge işlenemedi.';
+            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = document.getElementById('fileInput'            const fileInput = ata
+            const fileInpu           if (respo            const fileInpu           if (respo            const fileInpu           if (respo            const fileIntri         a,                          const fileInpu           if (respo            const fileInpu          lge işlenemedi.';
                 }
             } catch (error) {
                 resultDiv.textContent = 'Bağlantı hatası: Backend sunucusu açık mı?';
             }
         });
     </script>
-<body class="bg-slate-50 h-screen flex items-center justify-center">
-    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold mb-6 text-center text-slate-800">Fatura / Dekont Yükle</h2>
-        <div class="border-2 border-dashed border-slate-300 rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition">
-            <p class="text-sm text-slate-500 text-center mb-2">Belgenizi buraya sürükleyin veya seçin</p>
-            <input type="file" id="fileInput" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept=".pdf,.png,.jpg,.jpeg">
-        </div>
-        <button id="uploadBtn" class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
-            Sisteme Gönder
-        </button>
-        <div id="result" class="mt-4 text-sm text-slate-600 hidden"></div>
-    </div>
 </body>
 </html>
