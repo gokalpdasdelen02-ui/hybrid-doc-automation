@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hibrit Belge Ayrıştırma</title>
+    <title>Hibrit Belge Ayrıştırma ve Muhasebe Otomasyonu</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 h-screen flex items-center justify-center">
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-6">
     <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
         <h2 class="text-2xl font-bold mb-6 text-center text-slate-800">Fatura / Dekont Yükle</h2>
+        
         <div class="border-2 border-dashed border-slate-300 rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition">
-            <p class="text-sm text-slate-500 text-center mb-2">Belgenizi buraya sürükleyin veya seçin</p>
+            <p class="text-sm text-slate-500 text-center mb-3">Belgenizi buraya sürükleyin veya seçin</p>
             <input type="file" id="fileInput" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept=".pdf,.png,.jpg,.jpeg">
         </div>
-        <button id="uploadBtn" class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition">
-            Sisteme Gönder
+
+        <button id="uploadBtn" class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition shadow-md">
+            Sisteme Gönder ve Analiz Et
         </button>
-        <pre id="result" class="mt-4 p-4 bg-slate-900 text-green-400 rounded-lg text-xs overflow-x-auto hidden"></pre>
+
+        <pre id="result" class="mt-6 p-4 bg-slate-900 text-green-400 rounded-lg text-xs overflow-x-auto hidden max-h-60"></pre>
     </div>
 
     <script>
@@ -26,6 +29,7 @@
 
             if (fileInput.files.length === 0) {
                 resultDiv.textContent = 'Lütfen önce bir belge seçin.';
+                resultDiv.className = "mt-6 p-4 bg-red-100 text-red-700 rounded-lg text-sm";
                 resultDiv.classList.remove('hidden');
                 return;
             }
@@ -33,24 +37,29 @@
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
 
-            resultDiv.textContent = 'Belge yükleniyor...';
+            resultDiv.textContent = 'Belge işleniyor, lütfen bekleyin...';
+            resultDiv.className = "mt-6 p-4 bg-slate-900 text-yellow-400 rounded-lg text-xs overflow-x-auto";
             resultDiv.classList.remove('hidden');
 
             try {
-                const response = await fetch('http://localhost:8000/upload', {
+                // Doğru FastAPI endpoint adresimiz bağlandı
+                const response = await fetch('http://localhost:8000/api/v1/documents/analyze', {
                     method: 'POST',
                     body: formData
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    // JSON verisini daha okunaklı formatlamak için null, 2 parametreleri eklendi
-                    resultDiv.textContent = JSON.stringify(data, null, 2); 
+                    resultDiv.className = "mt-6 p-4 bg-slate-900 text-green-400 rounded-lg text-xs overflow-x-auto max-h-60";
+                    resultDiv.textContent = JSON.stringify(data, null, 2);
                 } else {
-                    resultDiv.textContent = 'API Hatası: Belge işlenemedi.';
+                    const errData = await response.json().catch(() => ({}));
+                    resultDiv.className = "mt-6 p-4 bg-red-100 text-red-700 rounded-lg text-sm";
+                    resultDiv.textContent = 'API Hatası: ' + (errData.detail || 'Belge işlenemedi.');
                 }
             } catch (error) {
-                resultDiv.textContent = 'Bağlantı hatası: Backend sunucusu açık mı?';
+                resultDiv.className = "mt-6 p-4 bg-red-100 text-red-700 rounded-lg text-sm";
+                resultDiv.textContent = 'Bağlantı hatası: Backend sunucusu (FastAPI) açık mı?';
             }
         });
     </script>
